@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sunny Paws Pet Shop — AI Chat Preview (2025)</title>
+  <meta name="description" content="Sunny Paws with integrated AI chat assistant (text + voice), product catalog, services, and contact form." />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Theme variables (mobile-first) */
+    :root{
+      --bg:#FFFDF8;
+      --surface:#FFFFFF;
+      --muted:#6B7280;
+      --accent:#FF9F1C;
+      --accent-700:#FF7A00;
+      --accent-100:rgba(255,159,28,0.08);
+      --success:#10B981;
+      --danger:#EF4444;
+      --radius:14px;
+      --shadow: 0 10px 30px rgba(2,6,23,0.06);
+      --max-width:1200px;
+      --gap:16px;
+      --font-sans: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Reset and base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font-sans);
+      background:linear-gradient(180deg,#FFFBF7 0%,var(--bg) 40%);
+      color:#04293A;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:18px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      padding:12px;
+    }
+
+    /* Header */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+    .logo{
+      width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-700));
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:800;box-shadow:var(--shadow);flex-shrink:0;font-size:18px;
+    }
+
+    nav{display:flex;gap:12px;align-items:center;flex:1;justify-content:center}
+    .nav-link{ text-decoration:none;color:var(--muted);padding:8px 12px;border-radius:10px;font-weight:600;font-size:15px;transition:background .16s, color .16s }
+    .nav-link:hover, .nav-link:focus{ background:var(--accent-100); color:var(--accent-700); transform:translateY(-1px); outline:none }
+
+    .header-actions{display:flex;gap:10px;align-items:center}
+    .cart-btn{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:12px;background:transparent;border:1px solid rgba(2,6,23,0.04);cursor:pointer;font-weight:700}
+    .cart-count{background:var(--accent);color:white;padding:4px 8px;border-radius:999px;font-size:13px;font-weight:800;min-width:28px;text-align:center}
+
+    /* Hero */
+    .hero{border-radius:var(--radius);padding:20px;background:linear-gradient(180deg, rgba(255,159,28,0.04), transparent);display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:var(--shadow);margin-bottom:18px}
+    .hero-copy{max-width:720px}
+    .hero h1{margin:0 0 8px 0;font-size:28px;line-height:1.06}
+    .lead{margin:0 0 12px 0;color:var(--muted);font-size:16px}
+    .cta{background:var(--accent);color:white;border:none;padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:800;box-shadow:0 12px 34px rgba(255,159,28,0.14)}
+
+    .hero-art{width:180px;height:140px;border-radius:12px;background:linear-gradient(180deg,#E8FAF2,#E8F3FF);display:flex;align-items:center;justify-content:center;color:#02665E;font-weight:700;text-align:center;padding:12px}
+
+    /* Layout */
+    main{display:grid;gap:18px}
+    .about,.products,.services,.contact{padding:18px;border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+
+    /* Values */
+    .values{display:flex;gap:10px;flex-wrap:wrap}
+    .value{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(2,6,23,0.03);font-weight:600;color:var(--muted)}
+
+    /* Products grid */
+    .products-grid{display:grid;gap:12px}
+    .product{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#FFFEFB);border:1px solid rgba(2,6,23,0.04);transition:transform .12s,box-shadow .12s}
+    .product:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.06)}
+    .product-media{width:96px;height:80px;border-radius:10px;background:linear-gradient(135deg,#FFF7ED,#FFF1E6);display:flex;align-items:center;justify-content:center;font-weight:700;color:#9A3412}
+    .product-title{margin:0;font-weight:700}
+    .product-desc{margin:6px 0;color:var(--muted);font-size:14px}
+    .product-meta{display:flex;align-items:center;gap:12px;width:100%}
+    .price{font-weight:800;color:#065F46}
+    .btn-add{background:var(--accent-700);color:white;border:none;padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:800}
+
+    /* Services */
+    .service-list{display:flex;gap:12px;flex-direction:column}
+    .service{padding:12px;border-radius:12px;background:rgba(2,6,23,0.02);display:flex;gap:12px;align-items:flex-start}
+
+    /* Contact */
+    form{display:grid;gap:10px}
+    label{font-weight:700;font-size:14px;color:#04293A}
+    input[type="text"], input[type="email"], textarea{padding:10px 12px;border-radius:10px;border:1px solid rgba(2,6,23,0.06);font-size:15px;background:transparent}
+    textarea{min-height:110px;resize:vertical}
+    .submit{background:var(--accent);color:white;border:none;padding:12px 16px;border-radius:12px;font-weight:800;cursor:pointer}
+    .hint{color:var(--muted);font-size:13px}
+
+    /* AI Chat sidebar */
+    .ai-chat {
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:360px;
+      max-width:calc(100% - 36px);
+      background:var(--surface);
+      border-radius:12px;
+      box-shadow:0 18px 46px rgba(2,6,23,0.14);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      z-index:90;
+    }
+
+    .ai-header{display:flex;align-items:center;justify-content:space-between;padding:12px;background:linear-gradient(180deg,#FFF7ED,#FFFBF7)}
+    .ai-title{font-weight:800}
+    .ai-body{padding:12px;display:flex;flex-direction:column;gap:10px;height:280px;overflow:auto;background:linear-gradient(180deg,#fff,#FFFDF8)}
+    .ai-input{display:flex;gap:8px;padding:12px;border-top:1px solid rgba(2,6,23,0.04);background:linear-gradient(180deg,#FFFDF8,#FFFDF8)}
+    .ai-input input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(2,6,23,0.06)}
+    .ai-btn{background:var(--accent-700);color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700}
+    .ai-msg{padding:8px 10px;border-radius:10px;max-width:84%;line-height:1.3}
+    .ai-msg.user{background:rgba(2,6,23,0.04);align-self:flex-end}
+    .ai-msg.bot{background:linear-gradient(180deg,#E8FDF3,#E8F7FF);align-self:flex-start}
+    .ai-controls{display:flex;gap:8px;align-items:center}
+
+    /* Toast & modal */
+    .toast{position:fixed;left:50%;transform:translateX(-50%) translateY(14px);bottom:20px;background:#062635;color:white;padding:12px 16px;border-radius:10px;box-shadow:0 12px 34px rgba(2,6,23,0.28);opacity:0;transition:opacity .22s,transform .22s;z-index:80}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;z-index:85;opacity:0;pointer-events:none;transition:opacity .18s}
+    .modal-backdrop.open{opacity:1;pointer-events:auto}
+    .modal{background:var(--surface);padding:20px;border-radius:12px;max-width:520px;width:calc(100% - 40px);box-shadow:var(--shadow)}
+    .modal h3{margin:0 0 8px 0}
+    .modal p{margin:0 0 12px 0;color:var(--muted)}
+
+    /* Footer */
+    footer{margin-top:18px;padding:12px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+    .socials{display:flex;gap:10px}
+    .social-link{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:rgba(2,6,23,0.03);text-decoration:none;color:var(--muted);font-weight:700}
+
+    /* Responsive */
+    @media(min-width:720px){
+      .products-grid{grid-template-columns:repeat(2,1fr)}
+      .about{grid-template-columns:1fr 320px}
+      .service-list{flex-direction:row}
+    }
+    @media(min-width:1000px){
+      .products-grid{grid-template-columns:repeat(3,1fr)}
+      .hero h1{font-size:36px}
+    }
+
+    /* Focus */
+    a:focus, button:focus, input:focus, textarea:focus{outline:3px solid rgba(99,102,241,0.12);outline-offset:3px}
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <!-- Header -->
+    <header>
+      <a class="brand" href="#home" aria-label="Sunny Paws home">
+        <div class="logo" aria-hidden="true">SP</div>
+        <div>
+          <div style="font-weight:800">Sunny Paws</div>
+          <div style="font-size:12px;color:var(--muted)">Happy pets. Happy homes.</div>
+        </div>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a class="nav-link" href="#home">Home</a>
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#products">Products</a>
+        <a class="nav-link" href="#services">Services</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions" role="group" aria-label="Header actions">
+        <button class="cart-btn" id="cartBtn" aria-label="Open shopping cart">
+          Cart <span class="cart-count" id="cartCount" aria-live="polite">0</span>
+        </button>
+        <button class="cart-btn" id="openAI" aria-label="Open AI assistant">AI</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section id="home" class="hero" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+          <h1 id="hero-heading">Pet-safe goods and caring hands — for every wag and purr.</h1>
+          <p class="lead">Natural food, safe toys, grooming, vet consults, and quick local delivery — all in one friendly place.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="cta" id="toProducts">Shop Products</button>
+            <a class="nav-link" href="#services" style="background:transparent;padding:8px 12px">Explore Services</a>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">Curated pet products chosen by local experts</div>
+      </section>
+
+      <!-- About -->
+      <section id="about" class="about" aria-labelledby="about-heading">
+        <div>
+          <h2 id="about-heading">About Sunny Paws</h2>
+          <p style="color:var(--muted)">We make pet care simple, healthy, and joyful for every family. Founded by pet lovers and veterinary partners, Sunny Paws blends modern nutrition, thoughtful design, and local service to support pet wellbeing at every life stage.</p>
+
+          <h3 style="margin-top:12px">Our mission</h3>
+          <p class="hint">Deliver trusted products and caring services that keep pets happy, healthy, and safe.</p>
+
+          <h3 style="margin-top:12px">Our story</h3>
+          <p class="hint">From a neighborhood shop to a community-focused online service, we keep local pets at the heart of everything we do.</p>
+        </div>
+
+        <aside style="padding:12px;border-radius:12px;background:linear-gradient(180deg,#FFF8F1,#FFFBF7);">
+          <h3 style="margin-top:0">Values</h3>
+          <div class="values" role="list">
+            <div class="value" role="listitem">Care first</div>
+            <div class="value" role="listitem">Quality ingredients</div>
+            <div class="value" role="listitem">Sustainable choices</div>
+            <div class="value" role="listitem">Community focused</div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Products -->
+      <section id="products" class="products" aria-labelledby="products-heading">
+        <h2 id="products-heading">Featured Products</h2>
+        <p class="hint">Hand-picked items for nutrition, play, and comfort.</p>
+
+        <div id="productsGrid" class="products-grid" role="list" aria-live="polite">
+          <!-- JS injected products -->
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services" class="services" aria-labelledby="services-heading">
+        <h2 id="services-heading">Services</h2>
+        <div class="service-list" role="list">
+          <article class="service" role="listitem" aria-labelledby="svc-grooming">
+            <div><h4 id="svc-grooming">Grooming</h4><p>Gentle baths, trims, and styling by experienced stylists.</p></div>
+          </article>
+
+          <article class="service" role="listitem" aria-labelledby="svc-vet">
+            <div><h4 id="svc-vet">Vet Consultation</h4><p>In-person and virtual consultations with trusted partner veterinarians.</p></div>
+          </article>
+
+          <article class="service" role="listitem" aria-labelledby="svc-delivery">
+            <div><h4 id="svc-delivery">Delivery</h4><p>Contact-free local delivery for essentials scheduled at your convenience.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Contact Us</h2>
+        <p class="hint">Questions, orders, or appointment requests — we are happy to help.</p>
+
+        <form id="contactForm" novalidate>
+          <div>
+            <label for="fullName">Name</label>
+            <input id="fullName" name="fullName" type="text" required placeholder="Your full name" aria-required="true" />
+          </div>
+
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@example.com" aria-required="true" />
+          </div>
+
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required placeholder="Tell us how we can help" aria-required="true"></textarea>
+          </div>
+
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <button class="submit" type="submit" id="sendBtn">Send Message</button>
+            <div id="formMsg" class="hint" aria-live="polite"></div>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        <div style="font-weight:800">Sunny Paws</div>
+        <div class="hint">© 2025 Sunny Paws. All rights reserved.</div>
+      </div>
+
+      <div class="socials" aria-label="Social links">
+        <a class="social-link" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">FB</a>
+        <a class="social-link" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</a>
+        <a class="social-link" href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X">X</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- AI Chat widget (text + voice) -->
+  <div class="ai-chat" id="aiChat" aria-hidden="true" style="display:none;">
+    <div class="ai-header">
+      <div class="ai-title">Sunny Paws Assistant</div>
+      <div>
+        <button id="closeAi" aria-label="Close assistant" class="cart-btn" style="padding:6px 8px">Close</button>
+      </div>
+    </div>
+
+    <div class="ai-body" id="aiBody" role="log" aria-live="polite">
+      <!-- messages go here -->
+      <div class="ai-msg bot">Hi! I am Sunny, your pet care assistant. Ask me about products, grooming, or appointments.</div>
+    </div>
+
+    <div class="ai-input">
+      <div style="display:flex;gap:8px;align-items:center;flex:1">
+        <input id="aiInput" type="text" placeholder="Ask about products, services, or care..." aria-label="AI message input" />
+        <button id="aiSend" class="ai-btn" aria-label="Send message">Send</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;padding:8px;background:linear-gradient(180deg,#FFFDF8,#FFFDF8);align-items:center;justify-content:space-between">
+      <div class="ai-controls">
+        <button id="micBtn" class="cart-btn" aria-pressed="false" title="Use voice input">🎤 Voice</button>
+        <label style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)"><input id="speechToggle" type="checkbox" /> Speak responses</label>
+      </div>
+      <div style="color:var(--muted);font-size:13px">AI v1 • Local demo</div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Modal confirmation -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Message Sent</h3>
+      <p id="modalText">Thank you — we received your message and will reply within 2 business days.</p>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+        <button id="modalClose" class="btn-add" style="background:transparent;color:var(--accent-700);border:1px solid rgba(2,6,23,0.06);">Close</button>
+        <button id="modalHome" class="cta">Back to Home</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ---------------------------
+       Data and state
+       --------------------------- */
+    const PRODUCTS = [
+      { id: "pup-5lb", name: "Complete Puppy Food 5 lb", desc: "Balanced nutrition for growing puppies with real chicken and DHA.", price: 24.99 },
+      { id: "dog-15lb", name: "Grain-Free Adult Dog Food 15 lb", desc: "Turkey and sweet potato formula for active adult dogs.", price: 69.50 },
+      { id: "cat-10l", name: "Low-Dust Clumping Cat Litter 10 L", desc: "Fast clumping with natural odor control.", price: 14.00 },
+      { id: "eco-chew", name: "Eco Chew Toy", desc: "Durable biodegradable chew toy for teething and play.", price: 12.75 },
+      { id: "slow-bowl", name: "Slow Feeder Bowl", desc: "Reduces gulping and supports healthy digestion.", price: 18.00 }
+    ];
+
+    const CART_KEY = "sunnyPaws_cart_v1";
+    let cart = {};
+
+    /* ---------------------------
+       Utilities
+       --------------------------- */
+    function loadCart(){ try{ const raw = localStorage.getItem(CART_KEY); cart = raw ? JSON.parse(raw) : {}; }catch(e){ cart = {}; } }
+    function saveCart(){ try{ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }catch(e){ /* ignore */ } }
+    function cartCount(){ return Object.values(cart).reduce((s,it) => s + it.qty, 0); }
+    function formatPrice(n){ return `$${n.toFixed(2)}`; }
+    function sanitize(text){ const d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
+    function showToast(msg, ms = 2500){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), ms); }
+
+    /* ---------------------------
+       Render products & cart
+       --------------------------- */
+    const productsGrid = document.getElementById('productsGrid');
+    function renderProducts(){
+      productsGrid.innerHTML = '';
+      PRODUCTS.forEach(p => {
+        const art = document.createElement('article');
+        art.className = 'product';
+        art.innerHTML = `
+          <div class="product-media" aria-hidden="true">${sanitize(p.name.split(' ')[0])}</div>
+          <div class="product-info">
+            <h3 class="product-title">${sanitize(p.name)}</h3>
+            <p class="product-desc">${sanitize(p.desc)}</p>
+            <div class="product-meta">
+              <div class="price">${formatPrice(p.price)}</div>
+              <div style="margin-left:auto"><button class="btn-add" data-id="${p.id}">Add to Cart</button></div>
+            </div>
+          </div>
+        `;
+        productsGrid.appendChild(art);
+      });
+
+      productsGrid.querySelectorAll('.btn-add').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          addToCart(id);
+        });
+      });
+    }
+
+    function addToCart(id){
+      const p = PRODUCTS.find(x => x.id === id);
+      if(!p) return;
+      if(!cart[id]) cart[id] = { ...p, qty: 1 };
+      else cart[id].qty += 1;
+      saveCart();
+      updateCartUI();
+      showToast(`${p.name} added to cart`);
+      animateCart();
+    }
+
+    function updateCartUI(){
+      const el = document.getElementById('cartCount');
+      el.textContent = String(cartCount());
+    }
+
+    function animateCart(){
+      const el = document.getElementById('cartCount');
+      el.animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}], { duration: 320, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+
+    /* ---------------------------
+       Contact form validation & modal
+       --------------------------- */
+    const contactForm = document.getElementById('contactForm');
+    const formMsg = document.getElementById('formMsg');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalText = document.getElementById('modalText');
+    const modalClose = document.getElementById('modalClose');
+    const modalHome = document.getElementById('modalHome');
+
+    function validEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      formMsg.textContent = '';
+      const name = (contactForm.fullName?.value || '').trim();
+      const email = (contactForm.email?.value || '').trim();
+      const message = (contactForm.message?.value || '').trim();
+
+      if(!name){ formMsg.textContent = 'Please enter your name.'; formMsg.style.color = 'var(--danger)'; contactForm.fullName.focus(); return; }
+      if(!email || !validEmail(email)){ formMsg.textContent = 'Please enter a valid email address.'; formMsg.style.color = 'var(--danger)'; contactForm.email.focus(); return; }
+      if(!message){ formMsg.textContent = 'Please enter a message.'; formMsg.style.color = 'var(--danger)'; contactForm.message.focus(); return; }
+
+      formMsg.textContent = 'Sending message...';
+      formMsg.style.color = 'var(--muted)';
+
+      // Simulate server processing then show modal confirmation
+      setTimeout(() => {
+        modalText.textContent = `${name}, thank you — we received your message and will reply within 2 business days.`;
+        openModal();
+        contactForm.reset();
+        formMsg.textContent = '';
+      }, 650);
+    });
+
+    function openModal(){ modalBackdrop.classList.add('open'); modalBackdrop.setAttribute('aria-hidden','false'); modalClose.focus(); }
+    function closeModal(){ modalBackdrop.classList.remove('open'); modalBackdrop.setAttribute('aria-hidden','true'); document.getElementById('sendBtn').focus(); }
+
+    modalClose.addEventListener('click', closeModal);
+    modalHome.addEventListener('click', () => { closeModal(); document.getElementById('home').scrollIntoView({ behavior: 'smooth' }); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modalBackdrop.classList.contains('open')) closeModal(); });
+
+    /* ---------------------------
+       Smooth scrolling for nav and CTA
+       --------------------------- */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(evt){
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target){
+          evt.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    document.getElementById('toProducts').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    /* ---------------------------
+       AI assistant: text + voice
+       - Local demo "AI" using simple rules and contextual replies
+       - Uses Web Speech API for voice input (SpeechRecognition) and voice output (speechSynthesis)
+       - Graceful fallbacks if APIs are unavailable
+       --------------------------- */
+
+    // DOM refs
+    const aiChat = document.getElementById('aiChat');
+    const openAI = document.getElementById('openAI');
+    const closeAi = document.getElementById('closeAi');
+    const aiBody = document.getElementById('aiBody');
+    const aiInput = document.getElementById('aiInput');
+    const aiSend = document.getElementById('aiSend');
+    const micBtn = document.getElementById('micBtn');
+    const speechToggle = document.getElementById('speechToggle');
+
+    // Speech APIs detection
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    const hasSpeechRecognition = Boolean(SpeechRecognition);
+    const hasSpeechSynthesis = 'speechSynthesis' in window && typeof window.speechSynthesis !== 'undefined';
+
+    // Recognition instance (created on demand)
+    let recognizer = null;
+    let recognizing = false;
+
+    // Safe speak function using speechSynthesis
+    function speak(text){
+      if(!hasSpeechSynthesis || !speechToggle.checked) return;
+      try{
+        window.speechSynthesis.cancel(); // stop previous
+        const utter = new SpeechSynthesisUtterance(String(text));
+        // prefer a friendly voice if available
+        const voices = window.speechSynthesis.getVoices();
+        if(voices && voices.length){
+          // pick a voice that supports en-US if possible
+          const v = voices.find(v => v.lang && v.lang.startsWith('en')) || voices[0];
+          utter.voice = v;
+        }
+        utter.rate = 1;
+        utter.pitch = 1;
+        window.speechSynthesis.speak(utter);
+      }catch(err){
+        console.warn('Speech synthesis failed', err);
+      }
+    }
+
+    // Append message to AI body
+    function appendMessage(text, who = 'bot'){
+      const el = document.createElement('div');
+      el.className = `ai-msg ${who === 'user' ? 'user' : 'bot'}`;
+      el.innerHTML = sanitize(text);
+      aiBody.appendChild(el);
+      aiBody.scrollTop = aiBody.scrollHeight;
+    }
+
+    // Basic rule-based AI responder for demo (no external calls)
+    function mockAIResponse(input){
+      const q = String(input || '').toLowerCase();
+      if(!q) return "Hi! Tell me what you need — product recommendations, grooming info, or help placing an order.";
+      if(q.includes('groom') || q.includes('bath') ) return "Our grooming service includes a gentle bath, brush, nail trim, and a style trim if needed. Bookings are available weekdays and Saturdays.";
+      if(q.includes('food') || q.includes('puppy') || q.includes('dog food')) return "For puppies we recommend 'Complete Puppy Food 5 lb' for balanced growth. Ask about delivery options for bulk orders.";
+      if(q.includes('cat') && q.includes('litter')) return "Our low-dust cat litter clumps fast and controls odors. We also offer subscription delivery.";
+      if(q.includes('price') || q.includes('cost') || q.includes('how much')) return "Prices are shown on the product cards. If you'd like a custom quote for bulk orders, tell me the items and quantities.";
+      if(q.includes('hello') || q.includes('hi') ) return "Hello! How can I help your pet today?";
+      if(q.includes('appointment') || q.includes('book')) return "To book grooming or a vet consult, tell me your preferred date and pet type and we'll check availability.";
+      if(q.includes('delivery') ) return "We offer local delivery within our service area, usually same or next business day. You can schedule delivery at checkout.";
+      if(q.includes('help') || q.includes('support')) return "I can help with product info, service scheduling, and orders. Ask me about a product or say 'book grooming'.";
+      // fallback: echo and offer next steps
+      return `I can help with that. You asked: "${input}". Would you like product recommendations, booking help, or delivery options?`;
+    }
+
+    // Handle AI query (text or voice)
+    function handleAIQuery(text){
+      const userText = String(text || '').trim();
+      if(!userText) return;
+      appendMessage(userText, 'user');
+      // compute response
+      try{
+        const reply = mockAIResponse(userText);
+        setTimeout(() => {
+          appendMessage(reply, 'bot');
+          speak(reply);
+        }, 420); // small delay for realism
+      }catch(err){
+        appendMessage("Sorry, I had trouble answering. Please try again.", 'bot');
+        console.error('AI error', err);
+      }
+    }
+
+    // Open/close AI panel
+    function openAIChat(){
+      aiChat.style.display = 'flex';
+      aiChat.setAttribute('aria-hidden','false');
+      // small entrance
+      setTimeout(()=> aiChat.classList.add('open'), 10);
+      aiInput.focus();
+    }
+
+    function closeAIChat(){
+      aiChat.style.display = 'none';
+      aiChat.setAttribute('aria-hidden','true');
+      // stop any speaking or recognition
+      try{ window.speechSynthesis.cancel(); }catch(e){}
+      if(recognizer && recognizing){ recognizer.stop(); recognizing = false; }
+    }
+
+    // Voice recognition lifecycle
+    function initRecognizer(){
+      if(!hasSpeechRecognition) return null;
+      try{
+        recognizer = new SpeechRecognition();
+        recognizer.lang = 'en-US';
+        recognizer.interimResults = false;
+        recognizer.maxAlternatives = 1;
+
+        recognizer.addEventListener('start', () => { recognizing = true; micBtn.setAttribute('aria-pressed','true'); micBtn.textContent = '🎙️ Listening...'; });
+        recognizer.addEventListener('end', () => { recognizing = false; micBtn.setAttribute('aria-pressed','false'); micBtn.textContent = '🎤 Voice'; });
+        recognizer.addEventListener('result', (evt) => {
+          const transcript = evt.results[0][0].transcript || '';
+          if(transcript) {
+            aiInput.value = transcript;
+            handleAIQuery(transcript);
+          }
+        });
+        recognizer.addEventListener('error', (evt) => {
+          console.warn('Recognition error', evt.error);
+          showToast('Voice input error: ' + evt.error);
+        });
+        return recognizer;
+      }catch(e){
+        console.warn('SpeechRecognition init failed', e);
+        return null;
+      }
+    }
+
+    // Attach event listeners for AI UI
+    document.getElementById('openAI').addEventListener('click', () => {
+      // toggle open/close
+      const visible = aiChat.style.display !== 'none' && aiChat.style.display !== '';
+      if(visible) closeAIChat(); else openAIChat();
+    });
+
+    closeAi.addEventListener('click', closeAIChat);
+
+    aiSend.addEventListener('click', () => {
+      const v = aiInput.value.trim();
+      if(!v) return;
+      handleAIQuery(v);
+      aiInput.value = '';
+    });
+
+    aiInput.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        const v = aiInput.value.trim();
+        if(v) { handleAIQuery(v); aiInput.value = ''; }
+      }
+    });
+
+    // Microphone button behavior
+    if(!hasSpeechRecognition){
+      micBtn.disabled = true;
+      micBtn.title = 'Voice input not supported in this browser';
+    } else {
+      micBtn.addEventListener('click', () => {
+        try {
+          if(!recognizer) initRecognizer();
+          if(!recognizer) { showToast('Voice input unavailable'); return; }
+          if(recognizing){ recognizer.stop(); } else { recognizer.start(); }
+        } catch(e) {
+          console.warn('Mic error', e);
+          showToast('Voice input error');
+        }
+      });
+    }
+
+    // Close AI when clicking outside (optional)
+    document.addEventListener('click', (e) => {
+      const open = aiChat.style.display !== 'none' && aiChat.style.display !== '';
+      const target = e.target;
+      const insideAi = aiChat.contains(target) || document.getElementById('openAI').contains(target);
+      if(open && !insideAi){
+        // Do not auto-close for accessibility; keep until user closes
+      }
+    });
+
+    /* ---------------------------
+       Initialization
+       --------------------------- */
+    (function init(){
+      loadCart();
+      renderProducts();
+      updateCartUI();
+
+      // Bind cart button
+      document.getElementById('cartBtn').addEventListener('click', () => {
+        const count = cartCount();
+        if(count === 0) showToast('Your cart is empty');
+        else {
+          const total = Object.values(cart).reduce((s,it) => s + it.price * it.qty, 0);
+          showToast(`${count} item(s) • Total ${formatPrice(total)}`);
+        }
+      });
+
+      // Initialize speech synthesis voices (load)
+      if('speechSynthesis' in window){
+        // some browsers populate voices asynchronously
+        window.speechSynthesis.getVoices();
+      }
+
+      // Prepare recognizer lazily for performance
+      // Provide hint if not supported
+      if(!hasSpeechRecognition){
+        micBtn.title = 'Voice input not supported';
+      }
+
+      // Ensure AI hidden initially
+      aiChat.style.display = 'none';
+      aiChat.setAttribute('aria-hidden','true');
+    })();
+  </script>
+</body>
+</html>
